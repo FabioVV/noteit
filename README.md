@@ -1,8 +1,8 @@
 # NOTEIT
 
 
-## Click and drag note creating app, for visual organizing of ideias
-
+## About 
+ - Click and drag note creating app, for visual organizing of ideas
 
 
 ## Tech

@@ -1,0 +1,109 @@
+<section id="container" style="position: relative;">
+</section>
+
+
+<script>
+
+    function checkOverlapping(div1, div2){
+        const rect1 = div1.getBoundingClientRect()
+        const rect2 = div2.getBoundingClientRect()
+
+
+        return !(rect1.right < rect2.left || 
+             rect1.left > rect2.right || 
+             rect1.bottom < rect2.top || 
+             rect1.top > rect2.bottom)
+    }
+
+    document.addEventListener("DOMContentLoaded", function(e) {
+        let isLeftClicking = false
+        let x = 0
+        let y = 0
+        let dcount = 0
+        let createdDivs = []
+
+        document.addEventListener('mousedown', (e) => {
+            if(e.target.id.includes("sec_drag_")){
+                return;
+            }
+
+            if(e.button == 0){
+                isLeftClicking = true
+
+                x = e.clientX
+                y = e.clientY
+
+                let window = document.createElement('div')
+                window.id = `sec_drag_${dcount}`
+                window.style.position = 'absolute'
+                window.style.left = `${x}px`
+                window.style.top = `${y}px`
+                window.style.backgroundColor = 'lightblue';
+                window.style.padding = '10px';
+                window.style.border = '1px solid black';
+                window.style.borderRadius = '5px';
+                
+
+                document.getElementById('container').appendChild(window)
+                createdDivs.push(window)
+                for(let i = 0; i < createdDivs.length; i++){
+                    if(checkOverlapping(window, createdDivs[i]) && window.id != createdDivs[i].id){
+                        isLeftClicking = false
+
+                        if(createdDivs[i].id.includes("sec_drag_") && window.id != createdDivs[i].id){
+                            window.remove()
+                            return;
+                        }
+
+                        window.style.backgroundColor = 'red'
+                        window.remove()
+                        alert('Cannot overlap notes')
+                    }
+                }
+            }
+        })
+
+        document.addEventListener('mousemove', (e) => {
+            const cur_elem = document.getElementById(`sec_drag_${dcount}`)
+
+            if(isLeftClicking){
+                x = e.clientX
+                y = e.clientY
+                cur_elem.style.width = `${x}px`
+                cur_elem.style.height =`${y}px`
+
+                for(let i = 0; i < createdDivs.length; i++){
+                    if(checkOverlapping(cur_elem, createdDivs[i]) && cur_elem.id != createdDivs[i].id){
+                        cur_elem.style.backgroundColor = 'red'
+                        isLeftClicking = false
+                        cur_elem.remove()
+                        alert('Cannot overlap notes')
+                    }
+                }
+            }
+
+        })
+
+        document.addEventListener('mouseup', (e) => {
+            isLeftClicking = false
+            dcount++
+            
+        })
+
+        const draggables = Array.from(document.getElementsByTagName('.div'))
+        draggables.forEach(draggable => {
+            draggable.addEventListener('dragstart', (event) => {
+                event.preventDefault()
+            });
+            draggable.addEventListener('dragover', (event) => {
+                event.preventDefault()
+            });
+            draggable.addEventListener('dragend', (event) => {
+                event.preventDefault()
+            });
+        });
+
+    })
+
+
+</script>   

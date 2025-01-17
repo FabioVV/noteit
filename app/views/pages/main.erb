@@ -1,4 +1,4 @@
-<section id="container" style="position: relative;">
+<section id="notes-container" style="position: relative; width: 200vw; height: 200vh;">
 </section>
 
 
@@ -28,10 +28,12 @@
             }
 
             if(e.button == 0){
+                const container = document.getElementById('notes-container')
+                const containerRect = container.getBoundingClientRect()
                 isLeftClicking = true
 
-                x = e.clientX
-                y = e.clientY
+                x = e.clientX - containerRect.left + container.scrollLeft
+                y = e.clientY - containerRect.top + container.scrollTop
 
                 let window = document.createElement('div')
                 window.id = `sec_drag_${dcount}`
@@ -41,10 +43,12 @@
                 window.style.backgroundColor = 'lightblue';
                 window.style.padding = '10px';
                 window.style.border = '1px solid black';
-                window.style.borderRadius = '5px';
-                
+                window.style.borderRadius = '20px';
+                // window.style.width = '250px';
+                // window.style.height = '250px';
 
-                document.getElementById('container').appendChild(window)
+
+                container.appendChild(window)
                 createdDivs.push(window)
                 for(let i = 0; i < createdDivs.length; i++){
                     if(checkOverlapping(window, createdDivs[i]) && window.id != createdDivs[i].id){
@@ -65,12 +69,19 @@
 
         document.addEventListener('mousemove', (e) => {
             const cur_elem = document.getElementById(`sec_drag_${dcount}`)
+            const container = document.getElementById('notes-container')
+            const containerRect = container.getBoundingClientRect()
+
 
             if(isLeftClicking){
-                x = e.clientX
-                y = e.clientY
-                cur_elem.style.width = `${x}px`
-                cur_elem.style.height =`${y}px`
+                const nx = (e.clientX - containerRect.left) - x
+                const ny =( e.clientY - containerRect.top) - y
+                
+
+                cur_elem.style.width = `${nx}px`
+                cur_elem.style.height =`${ny}px`
+
+                console.log(nx, ny)
 
                 for(let i = 0; i < createdDivs.length; i++){
                     if(checkOverlapping(cur_elem, createdDivs[i]) && cur_elem.id != createdDivs[i].id){

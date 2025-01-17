@@ -2868,6 +2868,7 @@ textarea {
 
 html {
   box-sizing: border-box;
+  overflow: auto !important;
 }
 
 *, *::before, *::after {

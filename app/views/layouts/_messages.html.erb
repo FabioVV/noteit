@@ -1,0 +1,14 @@
+<%# <% if !flash.empty? %>
+    <% flash.each do |name, message| %>
+        <% if name == 'notice'%>
+            <section class='flash-messages-container notice-container'>
+                <span class='_notice'><i class="fa-solid fa-check"></i> <%= message %></span>
+            </section>
+
+        <% else %>
+            <section class='flash-messages-container error-container'>
+                <span class='_error'><%= message %></span>
+            </section>
+        <% end %>
+    <% end %>
+<%# <% end %> 

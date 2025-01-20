@@ -1,18 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Noteit</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title><%= content_for(:title) || 'Noteit' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, interactive-widget=resizes-content">
+    
+    <meta name="view-transition" content="same-origin">
+    <meta name="turbo-cache-control" content="no-cache">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "bulma", "data-turbo-track": "reload"  %>
+    <%= stylesheet_link_tag "tachyons", "data-turbo-track": "reload"  %>
+    <%= stylesheet_link_tag "main", "data-turbo-track": "reload"  %>
 
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <header>
+      <% if content_for?(:navbar) %>
+        <%= yield(:navbar) %>
+      <% else %>
+        <%= render 'layouts/nav'%>
+      <% end %>
+    </header>
+
+    <%= render 'layouts/messages' %>
+
+    <main>
+      <%= yield %>
+    </main>
+
+
+
   </body>
 </html>
